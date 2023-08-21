@@ -42,8 +42,9 @@ def proxy(path):
     result = get_video(path)
     try:
         url = result[0][8]
+        ext = result[0][5]
     except IndexError:
         return abort(400)
     
     result = get(url)
-    return Response(result.content, headers={ "Content-Type": "video/mp4" })
+    return Response(result.content, headers={ "Content-Type": "video/" + ext })

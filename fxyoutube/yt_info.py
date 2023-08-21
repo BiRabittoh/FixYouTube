@@ -20,23 +20,26 @@ def handle_format(format):
             return None # too large
     except TypeError:
         if format["filesize_approx"] > c.MAX_SIZE_BYTES:
-            return None
+            return None # too large
 
     return format
+
+def truncate_lines(input_str: str, max: int = 5):
+    return "\n".join(input_str.splitlines()[:5])
 
 def get_info_ytdl(yt_id: str):
     info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
     formats = map(handle_format, info["formats"])
-    formats = list(filter(lambda x: x is not None, formats))
+    formats = filter(lambda x: x is not None, formats)
     try:
         max_format = max(formats, key=lambda x:x["quality"])
     except ValueError:
         return None
-    
+
     return {
         "id": info["id"],
         "title": info["title"],
-        "description": info["description"],
+        "description": truncate_lines(info["description"]),
         "uploader": info["uploader"],
         "uploader_id": info["uploader_id"],
         "video_ext": max_format["video_ext"],
