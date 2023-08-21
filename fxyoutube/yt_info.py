@@ -14,18 +14,20 @@ def handle_format(format):
 
     if format["url"].endswith(".m3u8"):
         return None # HLS stream
+    
     try:
         if format["filesize"] > c.MAX_SIZE_BYTES:
             return None # too large
     except TypeError:
-        return None
+        if format["filesize_approx"] > c.MAX_SIZE_BYTES:
+            return None
 
     return format
 
 def get_info_ytdl(yt_id: str):
     info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
     formats = map(handle_format, info["formats"])
-    formats = filter(lambda x: x is not None, formats)
+    formats = list(filter(lambda x: x is not None, formats))
     try:
         max_format = max(formats, key=lambda x:x["quality"])
     except ValueError:
