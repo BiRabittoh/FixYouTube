@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "fxyoutube"
+version = "0.1.0"
+description = "Embed YouTube videos on Telegram!"
+authors = ["Marco Andronaco <birabittoh@duck.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.3.2"
+requests = "^2.31.0"
+yt-dlp = "^2023.7.6"
+
+[tool.poetry.group.prod]
+optional = true
+
+[tool.poetry.group.prod.dependencies]
+waitress = "^2.1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
