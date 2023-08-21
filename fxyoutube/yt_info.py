@@ -25,7 +25,7 @@ def handle_format(format):
     return format
 
 def truncate_lines(input_str: str, max: int = 5):
-    return "\n".join(input_str.splitlines()[:5])
+    return "\n".join(input_str.splitlines()[:max])
 
 def get_info_ytdl(yt_id: str):
     info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
@@ -57,5 +57,5 @@ def get_info_ytdl(yt_id: str):
         "width": max_format["width"],
         "url": max_format["url"],
     })
-
+    print(max_format["url"])
     return yt_info

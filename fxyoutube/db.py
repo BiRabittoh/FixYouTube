@@ -38,7 +38,7 @@ def get_info(video):
         timestamp = datetime.strptime(temp[10], c.TS_FORMAT)
         delta = datetime.now() - timestamp
 
-        if delta > timedelta(seconds=30):
+        if delta > timedelta(minutes=c.YT_TTL_MINUTES):
             raise IndexError
         
         info = {
