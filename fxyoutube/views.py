@@ -46,5 +46,8 @@ def proxy(path):
     except IndexError:
         return abort(400)
     
+    if ext is None:
+        return abort(400)
+    
     result = get(url)
     return Response(result.content, headers={ "Content-Type": "video/" + ext })

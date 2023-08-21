@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS videos (
     description TEXT NOT NULL,
     uploader TEXT NOT NULL,
     uploader_id TEXT NOT NULL,
+    duration int NOT NULL,
     video_ext TEXT NOT NULL,
     height TEXT NOT NULL,
     width TEXT NOT NULL,
@@ -27,7 +28,7 @@ def get_video(video_id):
     return execute_query("SELECT * FROM videos WHERE id = (?);", [ video_id ])
 
 def cache_video(info):
-    return execute_query("INSERT OR REPLACE INTO videos (id, title, description, uploader, uploader_id, video_ext, height, width, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", list(info.values()))
+    return execute_query("INSERT OR REPLACE INTO videos (id, title, description, uploader, uploader_id, duration, video_ext, height, width, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", list(info.values()))
 
 def get_info(video):
     result = get_video(video)
@@ -46,10 +47,11 @@ def get_info(video):
             "description": temp[2],
             "uploader": temp[3],
             "uploader_id": temp[4],
-            "video_ext": temp[5],
-            "height": temp[6],
-            "width": temp[7],
-            "url": temp[8],
+            "duration": temp[5],
+            "video_ext": temp[6],
+            "height": temp[7],
+            "width": temp[8],
+            "url": temp[9],
         }
 
     except IndexError:

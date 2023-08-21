@@ -29,21 +29,33 @@ def truncate_lines(input_str: str, max: int = 5):
 
 def get_info_ytdl(yt_id: str):
     info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
-    formats = map(handle_format, info["formats"])
-    formats = filter(lambda x: x is not None, formats)
-    try:
-        max_format = max(formats, key=lambda x:x["quality"])
-    except ValueError:
-        return None
 
-    return {
+    yt_info = {
         "id": info["id"],
         "title": info["title"],
         "description": truncate_lines(info["description"]),
         "uploader": info["uploader"],
         "uploader_id": info["uploader_id"],
+        "duration": info["duration"],
+    }
+
+    formats = map(handle_format, info["formats"])
+    formats = filter(lambda x: x is not None, formats)
+    try:
+        max_format = max(formats, key=lambda x:x["quality"])
+    except ValueError:
+        yt_info.update({
+            "video_ext": None,
+            "height": 0,
+            "width": 0,
+            "url": None
+        })
+
+    yt_info.update({
         "video_ext": max_format["video_ext"],
         "height": max_format["height"],
         "width": max_format["width"],
         "url": max_format["url"],
-    }
+    })
+
+    return yt_info
