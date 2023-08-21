@@ -41,8 +41,8 @@ def main_route(video):
 def proxy(path):
     result = get_video(path)
     try:
-        url = result[0][8]
-        ext = result[0][5]
+        url = result[0][9]
+        ext = result[0][6]
     except IndexError:
         return abort(400)
     

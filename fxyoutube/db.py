@@ -35,7 +35,7 @@ def get_info(video):
 
     try:
         temp = result[0]
-        timestamp = datetime.strptime(temp[9], c.TS_FORMAT)
+        timestamp = datetime.strptime(temp[10], c.TS_FORMAT)
         delta = datetime.now() - timestamp
 
         if delta > timedelta(seconds=30):
