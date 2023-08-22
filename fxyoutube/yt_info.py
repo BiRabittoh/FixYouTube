@@ -14,6 +14,9 @@ def handle_format(format):
     if format["url"].endswith(".m3u8"):
         return None # HLS stream
     
+    if format["video_ext"] != "mp4":
+        return None
+    
     try:
         if format["filesize"] > c.MAX_SIZE_BYTES:
             return None # too large
@@ -34,7 +37,6 @@ def get_info_ytdl(yt_id: str):
         "title": info["title"],
         "description": truncate_lines(info["description"]),
         "uploader": info["uploader"],
-        "uploader_id": info["uploader_id"],
         "duration": info["duration"],
     }
 
@@ -44,7 +46,6 @@ def get_info_ytdl(yt_id: str):
         max_format = max(formats, key=lambda x:x["quality"])
     except ValueError:
         yt_info.update({
-            "video_ext": None,
             "height": 0,
             "width": 0,
             "url": None
@@ -52,9 +53,9 @@ def get_info_ytdl(yt_id: str):
         return yt_info
 
     yt_info.update({
-        "video_ext": max_format["video_ext"],
         "height": max_format["height"],
         "width": max_format["width"],
         "url": max_format["url"],
     })
+
     return yt_info

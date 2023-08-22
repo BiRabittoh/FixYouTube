@@ -44,8 +44,8 @@ def proxy(path):
     if result is None:
         return abort(400)
     
-    if result["video_ext"] is None:
+    url = result["url"]
+    if url is None:
         return abort(400)
 
-    req = get(result["url"])
-    return Response(req.content, headers={ "Content-Type": "video/" + result["video_ext"] })
+    return Response(get(url).content, headers=c.PROXY_HEADERS)
