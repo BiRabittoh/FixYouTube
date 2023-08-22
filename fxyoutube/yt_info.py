@@ -3,7 +3,6 @@ import fxyoutube.constants as c
 ydl = YoutubeDL()
 
 def handle_format(format):
-
     if format["resolution"] == "audio only":
         return None # audio-only
     try:
@@ -50,6 +49,7 @@ def get_info_ytdl(yt_id: str):
             "width": 0,
             "url": None
         })
+        return yt_info
 
     yt_info.update({
         "video_ext": max_format["video_ext"],
@@ -57,5 +57,4 @@ def get_info_ytdl(yt_id: str):
         "width": max_format["width"],
         "url": max_format["url"],
     })
-    print(max_format["url"])
     return yt_info

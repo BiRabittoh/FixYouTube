@@ -1,5 +1,5 @@
 from fxyoutube import app
-from fxyoutube.db import get_video, get_info, clear_cache
+from fxyoutube.db import get_video_from_cache, get_info, clear_cache
 import fxyoutube.constants as c
 
 from flask import request, redirect, abort, render_template, Response
@@ -39,15 +39,13 @@ def main_route(video):
 @app.route('/proxy/', defaults={'path': ''})
 @app.route('/proxy/<path:path>')
 def proxy(path):
-    result = get_video(path)
-    try:
-        url = result[0][9]
-        ext = result[0][6]
-    except IndexError:
+    result = get_video_from_cache(path)
+
+    if result is None:
         return abort(400)
     
-    if ext is None:
+    if result["video_ext"] is None:
         return abort(400)
-    
-    result = get(url)
-    return Response(result.content, headers={ "Content-Type": "video/" + ext })
+
+    req = get(result["url"])
+    return Response(req.content, headers={ "Content-Type": "video/" + result["video_ext"] })

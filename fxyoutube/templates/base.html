@@ -1,5 +1,15 @@
 <!DOCTYPE html>
-<html lang="und">
+<html lang="und"><!--
+
+███████ ██ ██   ██ ██    ██   ███   ██   ██ ██████ ██   ██ ██████  ███████ 
+██      ██  ██ ██   ██  ██  ██   ██ ██   ██   ██   ██   ██ ██   ██ ██      
+█████   ██   ███     ████   ██   ██ ██   ██   ██   ██   ██ ██████  █████   
+██      ██  ██ ██     ██    ██   ██ ██   ██   ██   ██   ██ ██   ██ ██      
+██      ██ ██   ██    ██      ███     ███     ██     ███   ██████  ███████ 
+██
+██  A better way to embed YouTube videos on Telegram (inspired by FixTweet).
+██  
+-->
 <head>
     <link rel="canonical" href="{{ base_url }}{{ info['id'] }}" />
     <meta property="theme-color" content="0000FF" />
@@ -7,7 +17,7 @@
     <meta property="twitter:site" content="{{ info['uploader'] }}" />
     <meta property="twitter:creator" content="{{ info['uploader'] }} ({{ info['uploader_id'] }})" />
     <meta property="twitter:title" content="{{ info['title'] }}" />
-    <me ta http-equiv="refresh" content="0;url={{ base_url }}{{ info['id'] }}" />
+    <meta http-equiv="refresh" content="0;url={{ base_url }}{{ info['id'] }}" />
     <meta property="twitter:player:stream:content_type" content="video/{{ info['video_ext'] }}" />
     <meta property="twitter:player:height" content="{{ info['height'] }}" />
     <meta property="twitter:player:width" content="{{ info['width'] }}" />
@@ -21,6 +31,4 @@
     <meta property="og:title" content="{{ info['title'] }}" />
     <meta property="og:description" content="{{ info['description'] }}" />
     <meta property="og:site_name" content="FixYouTube ({{ info['uploader'] }})" />
-</head>
-<body></body>
-</html>
+</head><body></body></html>
