@@ -8,10 +8,10 @@ import re
 
 def main_handler(request, video_id):
     if video_id == "":
-        return abort(400)
+        return redirect(c.REPO_URL)
+    
     user_agent = request.headers.get("User-Agent", "")
     result = re.findall(c.UA_REGEX, user_agent, flags=re.I)
-
     if len(result) == 0:
         return redirect(c.BASE_URL + video_id)
 
