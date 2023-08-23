@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    image: ghcr.io/BiRabittoh/FixYouTube:latest
+    image: ghcr.io/birabittoh/fixyoutube:main
     container_name: fixyoutube
     restart: unless-stopped
     ports:
