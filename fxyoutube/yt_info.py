@@ -1,46 +1,22 @@
-from yt_dlp import YoutubeDL
+from yt_dlp import YoutubeDL, DownloadError
 import fxyoutube.constants as c
-ydl = YoutubeDL()
 
-def handle_format(format):
-    if format["resolution"] == "audio only":
-        return None # audio-only
-    try:
-        if format["audio_channels"] is None:
-            return None # video-only
-    except KeyError:
-        return None # video-only
+ydl_keys = ["id", "title", "description", "uploader", "duration", "height", "width", "url"]
 
-    if format["url"].endswith(".m3u8"):
-        return None # HLS stream
-    
-    if format["video_ext"] != "mp4":
-        return None
-    
-    try:
-        if format["filesize"] > c.MAX_SIZE_BYTES:
-            return None # too large
-    except TypeError:
-        if format["filesize_approx"] > c.MAX_SIZE_BYTES:
-            return None # too large
-
-    return format
-
-def truncate_lines(input_str: str, max: int = 5):
+def truncate_lines(input_str: str, max: int = 4):
     return "\n".join(input_str.splitlines()[:max])
 
 def get_info_ytdl(yt_id: str):
-    info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
-
-    yt_info = { k: truncate_lines(info[k]) for k in ["id", "title", "description", "uploader", "duration"] }
-    yt_info.update({ "height": 0, "width": 0, "url": None })
-
-    formats = map(handle_format, info["formats"])
-    formats = filter(lambda x: x is not None, formats)
     try:
-        max_format = max(formats, key=lambda x:x["quality"])
-        yt_info.update({ k: max_format[k] for k in ["height", "width", "url"] })
-    except ValueError:
-        pass
-    finally:
-        return yt_info
+        with YoutubeDL(c.YTDL_OPTS) as ydl:
+            info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
+            yt_info = { k: info[k] for k in ydl_keys }
+    except DownloadError:
+        with YoutubeDL() as ydl:
+            info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
+            yt_info = { k: info[k] for k in ydl_keys[:-3] }
+            yt_info["height"] = yt_info["width"] = 0
+            yt_info["url"] = ""
+            
+    yt_info["description"] = truncate_lines(yt_info["description"])
+    return yt_info

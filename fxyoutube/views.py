@@ -44,8 +44,8 @@ def proxy(path):
     if result is None:
         return abort(400)
     
-    url = result["url"]
-    if url is None:
+    url = result.url
+    if url == "":
         return abort(400)
 
     return Response(get(url).content, headers=c.PROXY_HEADERS)

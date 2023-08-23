@@ -6,5 +6,5 @@ UA_REGEX = r"bot|facebook|embed|got|firefox\/92|firefox\/38|curl|wget|go-http|ya
 BASE_URL = "https://www.youtube.com/watch?v="
 REPO_URL = "https://github.com/BiRabittoh/FixYouTube"
 TS_FORMAT = "%Y-%m-%d %H:%M:%S"
-MAX_SIZE_BYTES = MAX_SIZE_MB * 1_000_000
 PROXY_HEADERS = { "Content-Type": "video/mp4" }
+YTDL_OPTS = { "format": f"best[ext=mp4][filesize<{ MAX_SIZE_MB }M][protocol^=http][protocol!*=dash]" }
