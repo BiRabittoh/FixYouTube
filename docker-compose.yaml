@@ -3,5 +3,6 @@ services:
     build: .
     image: birabittoh/fxyoutube:latest
     container_name: fxyoutube
+    restart: unless-stopped
     ports:
       - 127.0.0.1:1111:80

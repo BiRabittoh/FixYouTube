@@ -38,24 +38,17 @@ def get_info_ytdl(yt_id: str):
         "description": truncate_lines(info["description"]),
         "uploader": info["uploader"],
         "duration": info["duration"],
+        "height": 0,
+        "width": 0,
+        "url": None
     }
 
     formats = map(handle_format, info["formats"])
     formats = filter(lambda x: x is not None, formats)
     try:
         max_format = max(formats, key=lambda x:x["quality"])
+        yt_info.update({ k: max_format[k] for k in ["height", "width", "url"] })
     except ValueError:
-        yt_info.update({
-            "height": 0,
-            "width": 0,
-            "url": None
-        })
+        pass
+    finally:
         return yt_info
-
-    yt_info.update({
-        "height": max_format["height"],
-        "width": max_format["width"],
-        "url": max_format["url"],
-    })
-
-    return yt_info

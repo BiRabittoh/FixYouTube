@@ -32,14 +32,13 @@ def get_video_from_cache(video):
     result = get_video_db(video)
     try:
         temp = result[0]
+        timestamp = datetime.strptime(temp[8], c.TS_FORMAT)
+        delta = datetime.now() - timestamp
+        if delta > timedelta(minutes=c.YT_TTL_MINUTES):
+            raise IndexError
     except IndexError:
         return None
-    timestamp = datetime.strptime(temp[8], c.TS_FORMAT)
-    delta = datetime.now() - timestamp
-
-    if delta > timedelta(minutes=c.YT_TTL_MINUTES):
-        raise IndexError
-        
+    
     return {
         "id": temp[0],
         "title": temp[1],
