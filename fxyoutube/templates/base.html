@@ -15,10 +15,16 @@
     <meta property="theme-color" content="0000FF" />
     <meta property="twitter:card" content="player" />
     <meta property="twitter:site" content="{{ info['uploader'] }}" />
-    <meta property="twitter:creator" content="{{ info['uploader'] }} ({{ info['uploader_id'] }})" />
+    <meta property="twitter:creator" content="{{ info['uploader'] }}" />
     <meta property="twitter:title" content="{{ info['title'] }}" />
     <meta http-equiv="refresh" content="0;url={{ base_url }}{{ info['id'] }}" />
-    {% if info['url'] != "" %}
+    <meta property="og:url" content="{{ base_url }}{{ info['id'] }}" />
+    <meta property="og:image" content="https://i.ytimg.com/vi_webp/{{ info['id'] }}/maxresdefault.webp" />
+    <meta property="twitter:image" content="https://i.ytimg.com/vi_webp/{{ info['id'] }}/maxresdefault.webp" />
+    <meta property="og:title" content="{{ info['title'] }}" />
+    <meta property="og:description" content="{{ info['description'] }}" />
+    <meta property="og:site_name" content="FixYouTube ({{ info['uploader'] }})" />
+    {% if info['url'] %}
     <meta property="twitter:player:stream:content_type" content="video/mp4" />
     <meta property="twitter:player:height" content="{{ info['height'] }}" />
     <meta property="twitter:player:width" content="{{ info['width'] }}" />
@@ -29,8 +35,4 @@
     <meta property="og:video:duration" content="{{ info['duration'] }}">
     <meta property="og:video:type" content="video/mp4" />
     {% endif %}
-    <meta property="twitter:image" content="0" />
-    <meta property="og:title" content="{{ info['title'] }}" />
-    <meta property="og:description" content="{{ info['description'] }}" />
-    <meta property="og:site_name" content="FixYouTube ({{ info['uploader'] }})" />
 </head><body></body></html>
