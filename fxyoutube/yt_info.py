@@ -32,16 +32,8 @@ def truncate_lines(input_str: str, max: int = 5):
 def get_info_ytdl(yt_id: str):
     info = ydl.extract_info(c.BASE_URL + yt_id, download=False)
 
-    yt_info = {
-        "id": info["id"],
-        "title": info["title"],
-        "description": truncate_lines(info["description"]),
-        "uploader": info["uploader"],
-        "duration": info["duration"],
-        "height": 0,
-        "width": 0,
-        "url": None
-    }
+    yt_info = { k: truncate_lines(info[k]) for k in ["id", "title", "description", "uploader", "duration"] }
+    yt_info.update({ "height": 0, "width": 0, "url": None })
 
     formats = map(handle_format, info["formats"])
     formats = filter(lambda x: x is not None, formats)
