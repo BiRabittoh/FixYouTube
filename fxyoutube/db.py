@@ -22,6 +22,10 @@ class Video(BaseModel):
     timestamp = DateTimeField(default=datetime.now)
 
 def cache_video(info):
+    try:
+        Video.delete().where(Video.id == info["id"]).execute()
+    except DoesNotExist:
+        pass
     return Video.create(**info)
 
 def get_video_from_cache(video):
