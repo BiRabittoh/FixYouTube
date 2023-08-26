@@ -1,10 +1,24 @@
 # FixYouTube
 Embed YouTube videos on Telegram, Discord and more!
 
-## Docker
+## Instructions (Docker)
+
+### With reverse proxy
+Copy the template config file and make your adjustments. My configuration is based on [DuckDNS](http://duckdns.org/) but you can use whatever provider you find [here](https://docs.linuxserver.io/general/swag#docker-compose).
 ```
-docker-compose up -d
+cp docker/swag.env.example docker/swag.env
+nano docker/swag.env
 ```
+
+Finally: `docker-compose up -d`.
+
+### Without reverse proxy
+Simply run:
+```
+docker run -d -p 1111:80 --name fixyoutube --restart unless-stopped ghcr.io/birabittoh/fixyoutube:main
+```
+
+## Instructions (local)
 
 ### Debug
 ```
