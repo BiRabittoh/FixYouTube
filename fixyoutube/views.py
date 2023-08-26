@@ -8,7 +8,7 @@ import re
 
 def main_handler(request, video_id):
     if video_id == "":
-        return redirect(c.REPO_URL)
+        return render_template("index.html", repo_url=c.REPO_URL)
     
     user_agent = request.headers.get("User-Agent", "")
     result = re.findall(c.UA_REGEX, user_agent, flags=re.I)
