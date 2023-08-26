@@ -1,8 +1,8 @@
 from peewee import Model, CharField, TextField, IntegerField, DateTimeField, DoesNotExist
 from playhouse.sqliteq import SqliteQueueDatabase
 from datetime import datetime, timedelta
-from fxyoutube.yt_info import get_info_ytdl
-import fxyoutube.constants as c
+from fixyoutube.yt_info import get_info_ytdl
+import fixyoutube.constants as c
 
 db = SqliteQueueDatabase(c.DB_URL)
 

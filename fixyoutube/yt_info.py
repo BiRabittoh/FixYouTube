@@ -1,5 +1,5 @@
 from yt_dlp import YoutubeDL, DownloadError
-import fxyoutube.constants as c
+import fixyoutube.constants as c
 
 def truncate_lines(input_str: str, max: int = 4):
     return "\n".join(input_str.splitlines()[:max])

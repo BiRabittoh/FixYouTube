@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "fxyoutube"
+name = "fixyoutube"
 version = "0.1.0"
-description = "Embed YouTube videos on Telegram!"
+description = "Embed YouTube videos on Telegram, Discord and more!"
 authors = ["Marco Andronaco <birabittoh@duck.com>"]
 readme = "README.md"
+packages = [{include = "fixyoutube"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

@@ -1,6 +1,6 @@
-from fxyoutube import app
-from fxyoutube.db import get_video_from_cache, get_info, clear_cache
-import fxyoutube.constants as c
+from fixyoutube import app
+from fixyoutube.db import get_video_from_cache, get_info, clear_cache
+import fixyoutube.constants as c
 
 from flask import request, redirect, abort, render_template, Response
 from requests import get

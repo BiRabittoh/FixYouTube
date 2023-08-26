@@ -6,5 +6,5 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY ./fxyoutube ./fxyoutube
-ENV APP_MODULE=fxyoutube:app
+COPY ./fixyoutube ./fixyoutube
+ENV APP_MODULE=fixyoutube:app
