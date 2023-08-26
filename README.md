@@ -4,7 +4,7 @@ Embed YouTube videos on Telegram, Discord and more!
 ## How to use:
 Replace `www.youtube.com` or `youtu.be` with `y.outube.duckdns.org` to fix embeds for short videos.
 
-You can find a short video demo [here](https://github.com/BiRabittoh/FixYouTube/assets/26506860/2896d39e-a86e-47ce-939a-785b73d11683).
+![Demo](https://github.com/BiRabittoh/FixYouTube/assets/26506860/af3e9691-8c98-47e5-90e3-e5ebb1ba533f)
 
 ## Instructions (Docker)
 
