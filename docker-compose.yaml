@@ -6,3 +6,18 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:1111:80
+
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+        - NET_ADMIN
+    env_file:
+      - docker/swag.env
+    volumes:
+        - /etc/config/swag:/config
+        - ./docker/fixyoutube.subdomain.conf:/config/nginx/proxy-confs/fixyoutube.subdomain.conf:ro
+    ports:
+        - 443:443
+        - 80:80
+    restart: unless-stopped
