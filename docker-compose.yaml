@@ -4,9 +4,6 @@ services:
     image: ghcr.io/birabittoh/fixyoutube:main
     container_name: fixyoutube
     restart: unless-stopped
-    ports:
-      - 127.0.0.1:1111:80
-
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
@@ -15,7 +12,7 @@ services:
     env_file:
       - docker/swag.env
     volumes:
-        - /etc/config/swag:/config
+        #- /etc/config/swag:/config
         - ./docker/fixyoutube.subdomain.conf:/config/nginx/proxy-confs/fixyoutube.subdomain.conf:ro
     ports:
         - 443:443

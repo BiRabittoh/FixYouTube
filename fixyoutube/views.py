@@ -41,11 +41,10 @@ def main_route(video):
 def proxy(path):
     result = get_video_from_cache(path)
 
-    if result is None:
+    try:
+        if result.url == "":
+            raise AttributeError
+    except AttributeError:
         return abort(400)
     
-    url = result.url
-    if url == "":
-        return abort(400)
-
-    return Response(get(url).content, headers=c.PROXY_HEADERS)
+    return Response(get(result.url).content, headers=c.PROXY_HEADERS)
