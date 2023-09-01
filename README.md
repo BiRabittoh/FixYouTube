@@ -31,6 +31,12 @@ poetry install
 poetry run flask --app fixyoutube run --port 1111 --debug
 ```
 
+### Tests
+```
+poetry install --with test
+poetry run pytest
+```
+
 ### Production
 ```
 poetry install --with prod

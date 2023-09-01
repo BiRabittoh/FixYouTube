@@ -9,3 +9,8 @@ PROXY_HEADERS = { "Content-Type": "video/mp4" }
 YTDL_OPTS = { "format": f"best[ext=mp4][filesize<?{ MAX_SIZE_MB }M][filesize_approx<?{ MAX_SIZE_MB }M][protocol^=http][protocol!*=dash] / (bv*+ba/b)" }
 YTDL_KEYS = [ "id", "title", "description", "uploader", "duration", "height", "width", "url" ]
 URL_KEY = YTDL_KEYS[-1]
+
+# test stuff
+TELEGRAM_USER_AGENT = "TelegramBot (like TwitterBot)"
+SHORT_VIDEO_ID = "crF2AIDlo54"
+LONG_VIDEO_ID = "OkdMvr19V0o"

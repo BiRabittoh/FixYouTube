@@ -1,15 +1,11 @@
 from fixyoutube import app
 from fixyoutube.db import get_video_from_cache, get_info, clear_cache
 import fixyoutube.constants as c
-
 from flask import request, redirect, abort, render_template, Response
 from requests import get
 import re
 
 def main_handler(request, video_id):
-    if video_id == "":
-        return render_template("index.html", repo_url=c.REPO_URL)
-    
     user_agent = request.headers.get("User-Agent", "")
     result = re.findall(c.UA_REGEX, user_agent, flags=re.I)
     if len(result) == 0:
@@ -21,6 +17,10 @@ def main_handler(request, video_id):
     
     return render_template("base.html", info=info, base_url=c.BASE_URL)
 
+@app.route("/")
+def index_route():
+    return render_template("index.html", repo_url=c.REPO_URL)
+
 @app.route("/clear")
 def clear_route():
     clear_cache()
@@ -28,18 +28,21 @@ def clear_route():
 
 @app.route("/watch")
 def watch_route():
-    video = request.args.get('v', '')
-    return main_handler(request, video)
+    try:
+        video_id = request.args["v"]
+        if video_id == "":
+            raise KeyError
+    except KeyError:
+        return redirect("/")
+    return main_handler(request, video_id)
 
-@app.route('/', defaults={'video': ''})
-@app.route('/<path:video>')
-def main_route(video):
-    return main_handler(request, video)
+@app.route('/<video_id>')
+def main_route(video_id):
+    return main_handler(request, video_id)
 
-@app.route('/proxy/', defaults={'path': ''})
-@app.route('/proxy/<path:path>')
-def proxy(path):
-    result = get_video_from_cache(path)
+@app.route('/proxy/<video_id>')
+def proxy(video_id):
+    result = get_video_from_cache(video_id)
 
     try:
         if result.url == "":
