@@ -1,7 +1,8 @@
 from peewee import Model, CharField, TextField, IntegerField, DateTimeField, DoesNotExist
 from playhouse.sqliteq import SqliteQueueDatabase
+from requests import get
+from requests.exceptions import JSONDecodeError
 from datetime import datetime, timedelta
-from fixyoutube.yt_info import get_info_ytdl
 import fixyoutube.constants as c
 
 db = SqliteQueueDatabase(c.DB_URL)
@@ -11,7 +12,7 @@ class BaseModel(Model):
         database = db
 
 class Video(BaseModel):
-    id = CharField(unique=True)
+    videoId = CharField(unique=True)
     title = CharField()
     description = TextField()
     uploader = CharField()
@@ -23,14 +24,14 @@ class Video(BaseModel):
 
 def cache_video(info):
     try:
-        Video.delete().where(Video.id == info["id"]).execute()
+        Video.delete().where(Video.videoId == info['videoId']).execute()
     except DoesNotExist:
         pass
     return Video.create(**info)
 
 def get_video_from_cache(video):
     try:
-        temp = Video.get(Video.id == video)
+        temp = Video.get(Video.videoId == video)
     except DoesNotExist:
         return None
 
@@ -45,12 +46,31 @@ def get_info(video):
 
     if info is not None:
         return info
+    try:
+        res = get(c.INVIDIOUS_ENDPOINT.format(video)).json()
+    except JSONDecodeError:
+        print("JSON decode error. Bad instance or video does not exist.")
+        return None
     
-    info = get_info_ytdl(video)
-    if info is not None:
-        cache_video(info)
+    try:
+        format = [ x for x in res["formatStreams"] if x["container"] == "mp4"][-1]
+    except KeyError:
+        return None
+    
+    width, height = format["size"].split("x")
 
-    return info
+    info = {
+        "videoId": res["videoId"],
+        "title": res["title"],
+        "description": res["description"],
+        "uploader": res["author"],
+        "duration": res["lengthSeconds"],
+        "height": height,
+        "width": width,
+        "url": format["url"]
+    }
+
+    return cache_video(info)
 
 def clear_cache():
     Video.delete().execute()

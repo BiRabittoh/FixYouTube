@@ -27,14 +27,8 @@ docker run -d -p 1111:80 --name fixyoutube --restart unless-stopped ghcr.io/bira
 
 ### Debug
 ```
-poetry install
-poetry run flask --app fixyoutube run --port 1111 --debug
-```
-
-### Tests
-```
 poetry install --with test
-poetry run pytest
+poetry run flask --app fixyoutube run --port 1111 --debug
 ```
 
 ### Production

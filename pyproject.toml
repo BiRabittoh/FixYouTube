@@ -10,8 +10,8 @@ packages = [{include = "fixyoutube"}]
 python = "^3.11"
 flask = "^2.3.2"
 requests = "^2.31.0"
-yt-dlp = "^2023.7.6"
 peewee = "^3.16.3"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.group.prod]
 optional = true

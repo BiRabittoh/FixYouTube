@@ -7,4 +7,5 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY ./fixyoutube ./fixyoutube
+COPY .en[v] .
 ENV APP_MODULE=fixyoutube:app

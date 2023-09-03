@@ -18,20 +18,20 @@ def test_homepage(client):
     assert b"youtu.be" in response.data
 
 def test_redirect(client):
-    response = client.get("/" + c.SHORT_VIDEO_ID)
-    assert response.location == c.BASE_URL + c.SHORT_VIDEO_ID
+    response = client.get("/" + c.GOOD_VIDEO_ID)
+    assert response.location == c.BASE_URL + c.GOOD_VIDEO_ID
 
 def test_working_video(client):
-    response = client.get("/" + c.SHORT_VIDEO_ID, headers={'User-Agent': c.TELEGRAM_USER_AGENT})
-    print(response.data.decode("utf-8"))
-    assert b"/proxy/" + c.SHORT_VIDEO_ID.encode("utf-8") in response.data
+    response = client.get("/" + c.GOOD_VIDEO_ID, headers={'User-Agent': c.TELEGRAM_USER_AGENT})
+    response_data = response.data.decode("utf-8")
+    assert b"/proxy/" + c.GOOD_VIDEO_ID.encode("utf-8") in response.data
 
-    response = client.get("/proxy/" + c.SHORT_VIDEO_ID)
+    response = client.get("/proxy/" + c.GOOD_VIDEO_ID)
     assert response.status_code == 200
 
 def test_not_working_video(client):
-    response = client.get("/" + c.LONG_VIDEO_ID, headers={'User-Agent': c.TELEGRAM_USER_AGENT})
-    assert b"/proxy/" + c.LONG_VIDEO_ID.encode("utf-8") not in response.data
+    response = client.get("/" + c.BAD_VIDEO_ID, headers={'User-Agent': c.TELEGRAM_USER_AGENT})
+    assert b"/proxy/" + c.BAD_VIDEO_ID.encode("utf-8") not in response.data
     
-    response = client.get("/proxy/" + c.LONG_VIDEO_ID)
+    response = client.get("/proxy/" + c.BAD_VIDEO_ID)
     assert response.status_code == 400
