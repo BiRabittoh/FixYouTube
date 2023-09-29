@@ -1,9 +1,8 @@
 from peewee import Model, CharField, TextField, IntegerField, DateTimeField, DoesNotExist
 from playhouse.sqliteq import SqliteQueueDatabase
-from requests import get
-from requests.exceptions import JSONDecodeError
 from datetime import datetime, timedelta
 import fixyoutube.constants as c
+from fixyoutube.api import get_info_from_api
 
 db = SqliteQueueDatabase(c.DB_URL)
 
@@ -23,6 +22,8 @@ class Video(BaseModel):
     timestamp = DateTimeField(default=datetime.now)
 
 def cache_video(info):
+    if info is None:
+        return
     try:
         Video.delete().where(Video.videoId == info['videoId']).execute()
     except DoesNotExist:
@@ -38,7 +39,7 @@ def get_video_from_cache(video):
     delta = datetime.now() - temp.timestamp
     if delta > timedelta(minutes=c.YT_TTL_MINUTES):
         return None
-    
+
     return temp
 
 def get_info(video):
@@ -46,29 +47,8 @@ def get_info(video):
 
     if info is not None:
         return info
-    try:
-        res = get(c.INVIDIOUS_ENDPOINT.format(video)).json()
-    except JSONDecodeError:
-        print("JSON decode error. Bad instance or video does not exist.")
-        return None
     
-    try:
-        format = [ x for x in res["formatStreams"] if x["container"] == "mp4"][-1]
-    except KeyError:
-        return None
-    
-    width, height = format["size"].split("x")
-
-    info = {
-        "videoId": res["videoId"],
-        "title": res["title"],
-        "description": res["description"],
-        "uploader": res["author"],
-        "duration": res["lengthSeconds"],
-        "height": height,
-        "width": width,
-        "url": format["url"]
-    }
+    info = get_info_from_api(video)
 
     return cache_video(info)
 
