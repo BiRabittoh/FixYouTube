@@ -1,26 +1,30 @@
 from requests import get
 from requests.exceptions import JSONDecodeError
 import fixyoutube.constants as c
+import logging
+logger = logging.getLogger(__name__)
 
 def get_url(video: str):
-    return c.INVIDIOUS_ENDPOINT.format(instance=c.INVIDIOUS_INSTANCE, video=video)
+    req_url = c.INVIDIOUS_ENDPOINT.format(instance=c.INVIDIOUS_INSTANCE, video=video)
+    logger.debug("GET: " + req_url)
+    return req_url
 
 def get_info_from_api(video):
     try:
         res = get(get_url(video))
-    except Exception:
-        print("Bad instance.")
+    except Exception as e:
+        logger.warn("GET error: " + str(e))
         c.new_instance()
         return get_info_from_api(video)
     
     try:
         parsed = res.json()
     except JSONDecodeError:
-        print("JSON decode error. Bad instance or video does not exist.")
+        logger.warn("JSON decode failed for the following video: " + video)
         return None
     
     try:
-        format = [ x for x in parsed["formatStreams"] if x["container"] == "mp4"][-1]
+        format = [ x for x in parsed["formatStreams"] if x["container"] == "mp4" ][-1]
     except KeyError:
         return None
     

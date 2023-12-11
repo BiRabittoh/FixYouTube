@@ -1,18 +1,23 @@
 from dotenv import load_dotenv
 from os import getenv
 from requests import get
+import logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 load_dotenv()
 
 def new_instance():
     global INVIDIOUS_INSTANCE
     instances = get("https://api.invidious.io/instances.json?pretty=1&sort_by=api,type").json()
     INVIDIOUS_INSTANCE = instances[0][0]
-    return INVIDIOUS_INSTANCE
+    logger.info("Using new Invidious instance: " + INVIDIOUS_INSTANCE)
 
 MAX_SIZE_MB = getenv("MAX_SIZE_MB", "50")
 YT_TTL_MINUTES = int(getenv("YT_TTL_MINUTES", 60 * 6))
 DB_URL = getenv("DB_URL", "cache.db")
-INVIDIOUS_INSTANCE = getenv("INVIDIOUS_INSTANCE", new_instance())
+INVIDIOUS_INSTANCE = getenv("INVIDIOUS_INSTANCE")
+if INVIDIOUS_INSTANCE is None:
+    new_instance()
 REPO_URL = getenv("REPO_URL", "https://github.com/BiRabittoh/FixYouTube")
 
 UA_REGEX = r"bot|facebook|embed|got|firefox\/92|firefox\/38|curl|wget|go-http|yahoo|generator|whatsapp|preview|link|proxy|vkshare|images|analyzer|index|crawl|spider|python|cfnetwork|node"

@@ -3,6 +3,8 @@ from playhouse.sqliteq import SqliteQueueDatabase
 from datetime import datetime, timedelta
 import fixyoutube.constants as c
 from fixyoutube.api import get_info_from_api
+import logging
+logger = logging.getLogger(__name__)
 
 db = SqliteQueueDatabase(c.DB_URL)
 
@@ -43,13 +45,17 @@ def get_video_from_cache(video):
     return temp
 
 def get_info(video):
+    
+    logger.info("Video " + str(video) + " was requested.")
     info = get_video_from_cache(video)
 
     if info is not None:
+        logger.info("Retrieved from cache.")
         return info
     
     info = get_info_from_api(video)
 
+    logger.info("Retrieved from API.")
     return cache_video(info)
 
 def clear_cache():
