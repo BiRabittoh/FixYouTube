@@ -47,5 +47,5 @@ def proxy(video_id):
     if result is None:
         return abort(400)
     
-    req = get(result.url, headers=c.PROXY_HEADERS_REQUEST)
-    return Response(req.content, headers=c.PROXY_HEADERS_RESPONSE)
+    with get(result.url, headers=c.PROXY_HEADERS_REQUEST, stream=True) as r:
+        return Response(r.content, headers=c.PROXY_HEADERS_RESPONSE)
